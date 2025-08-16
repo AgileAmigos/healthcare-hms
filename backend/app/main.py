@@ -1,27 +1,40 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routes import healthcheck
 
-# Create the app instance
+# Import routers
+from .routes import healthcheck, patients
+from .models import Base
+from .db import engine
+
+# Create tables automatically (for dev; use Alembic in prod)
+Base.metadata.create_all(bind=engine)
+
+# FastAPI app instance
 app = FastAPI(
     title="Multicare HMS API",
     description="Backend API for Multicare Hospital Management System",
     version="0.1.0"
 )
 
-# CORS Middleware (allow frontend to communicate)
+# CORS settings
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Change to specific origins in prod
+    allow_origins=origins,      # restrict to frontend
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Include routes
+# Register routers
 app.include_router(healthcheck.router)
+app.include_router(patients.router)
 
-# Root welcome route
+# Root
 @app.get("/")
 def root():
     return {"message": "Welcome to Multicare HMS API"}
