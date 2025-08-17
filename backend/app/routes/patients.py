@@ -12,23 +12,22 @@ router = APIRouter(prefix="/patients", tags=["Patients"])
 @router.get("/opd")
 def get_opd_patients(date_filter: date = Query(...), db: Session = Depends(get_db)):
     records = (
-        db.query(models.Appointment)
+        db.query(models.Appointment, models.Patient, models.Staff)
         .join(models.Patient, models.Appointment.patient_id == models.Patient.id)
         .join(models.Staff, models.Appointment.doctor_id == models.Staff.id)
         .all()
     )
 
-    # Serialize records into JSON-friendly dicts
     return [
         {
-            "appointment_id": r.id,
-            "patient_id": r.patient_id,
-            # "patient_name": r.patient.name,
-            "doctor_id": r.doctor_id,
-            # "doctor_name": r.doctor.name,
-            "appointment_time": str(r.appointment_time),
+            "appointment_id": appointment.id,
+            "patient_id": patient.id,
+            "patient_name": f'{patient.first_name} {patient.last_name}',  
+            "doctor_id": staff.id,
+            "doctor_name": f'{staff.first_name} {staff.last_name}',    
+            "appointment_time": str(appointment.appointment_time),
         }
-        for r in records
+        for appointment, patient, staff in records
     ]
 
 
