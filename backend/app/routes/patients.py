@@ -15,7 +15,6 @@ def get_opd_patients(date_filter: date = Query(...), db: Session = Depends(get_d
         db.query(models.Appointment)
         .join(models.Patient, models.Appointment.patient_id == models.Patient.id)
         .join(models.Staff, models.Appointment.doctor_id == models.Staff.id)
-        .filter(models.Appointment.appointment_time.cast(date) == date_filter)
         .all()
     )
 
@@ -23,10 +22,10 @@ def get_opd_patients(date_filter: date = Query(...), db: Session = Depends(get_d
     return [
         {
             "appointment_id": r.id,
-            "patient_id": r.patient.id,
-            "patient_name": r.patient.name,
-            "doctor_id": r.doctor.id,
-            "doctor_name": r.doctor.name,
+            "patient_id": r.patient_id,
+            # "patient_name": r.patient.name,
+            "doctor_id": r.doctor_id,
+            # "doctor_name": r.doctor.name,
             "appointment_time": str(r.appointment_time),
         }
         for r in records
