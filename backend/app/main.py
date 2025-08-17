@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routes import healthcheck
+from .routes import prescription
 
 # Create the app instance
 app = FastAPI(
@@ -20,6 +21,12 @@ app.add_middleware(
 
 # Include routes
 app.include_router(healthcheck.router)
+
+app.include_router(
+    prescription.router, 
+    prefix="/prescriptions", 
+    tags=["Prescriptions"]
+)
 
 # Root welcome route
 @app.get("/")

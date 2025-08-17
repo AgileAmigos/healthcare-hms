@@ -1,8 +1,9 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
+import Prescription from './pages/Prescription';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Register from './pages/Register';
+// import Register from './pages/Register';
 
 
 
@@ -15,7 +16,8 @@ function App() {
       
       <Routes>
           <Route path='/' element={<Home/>}/>
-          <Route path='/register' element={<Register/>}/>
+          <Route path='/prescription' element={<Prescription />} />
+          {/* <Route path='/register' element={<Register/>}/> */}
       </Routes>
 
       {!isAdminRoute && <Footer />}
