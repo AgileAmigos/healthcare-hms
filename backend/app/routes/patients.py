@@ -39,26 +39,28 @@ def get_opd_patients(date_filter: date = Query(...), db: Session = Depends(get_d
 # -----------------------------
 @router.get("/ipd")
 def get_ipd_patients(db: Session = Depends(get_db)):
-    admissions = (
-        db.query(models.Admission)
+    # The query now fetches Admission, Patient, and Staff objects
+    records = (
+        db.query(models.Admission, models.Patient, models.Staff) # <-- MODIFIED THIS LINE
         .join(models.Patient, models.Admission.patient_id == models.Patient.id)
         .join(models.Staff, models.Admission.admitting_doctor_id == models.Staff.id)
         .filter(models.Admission.status == "Admitted")
         .all()
     )
 
+    # The code now unpacks the tuple (admission, patient, staff) for each record
     return [
         {
-            "admission_id": a.id,
-            "patient_id": a.patient.id,
-            "patient_name": a.patient.name,
-            "admitting_doctor_id": a.doctor.id,
-            "admitting_doctor_name": a.doctor.name,
-            "room_number": a.room_number,
-            "status": a.status,
-            "admission_date": str(a.admission_date),
+            "admission_id": admission.id,
+            "patient_id": patient.id,
+            "patient_name": f'{patient.first_name} {patient.last_name}',
+            "admitting_doctor_id": staff.id,
+            "admitting_doctor_name": f'{staff.first_name} {staff.last_name}',
+            "room_number": admission.room_number,
+            "status": admission.status,
+            "admission_date": str(admission.admission_date),
         }
-        for a in admissions
+        for admission, patient, staff in records # <-- MODIFIED THIS LINE
     ]
 
 
