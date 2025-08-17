@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchIPDPatients } from "../../lib/api";
+import { fetchIPDPatients } from "../../lib/api.ts";
 
 type BedRecord = {
     admission_id: number;

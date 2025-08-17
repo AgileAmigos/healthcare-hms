@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchOPDPatients } from "../../lib/api";
+import { fetchOPDPatients } from "../../lib/api.ts";
 
 type OPDPatient = {
     appointment_id: number;

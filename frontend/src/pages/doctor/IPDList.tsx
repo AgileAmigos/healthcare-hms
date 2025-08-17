@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchIPDPatients, dischargePatient, transferPatient } from "../../lib/api";
+import { fetchIPDPatients, dischargePatient, transferPatient } from "../../lib/api.ts";
 import Modal from "../../components/Modal"; // Assuming Modal component exists
 
 interface IPDPatient {
