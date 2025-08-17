@@ -96,7 +96,7 @@ const AppointmentRequest = () => {
           />
         </div>
 
-        {/* Feedback Messages */}
+     
         {success && (
           <div className="flex items-center p-4 text-sm text-green-700 bg-green-100 rounded-lg">
             <CheckCircle className="h-5 w-5 mr-3" />

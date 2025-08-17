@@ -22,24 +22,24 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 w-full bg-[#f1f1f1] shadow-lg font-bold z-50">
       <div className="flex justify-around items-center">
-        {/* Logo / Brand */}
+        
         <div className="text-2xl w-1/6 p-4 flex items-center">
           <HeartPulse className="mx-1 text-red-400" size={35} />
           Multicare HMS
         </div>
 
-        {/* Spacer */}
+        
         <div className="w-3/5"></div>
 
-        {/* Navigation Links */}
+        
         <div className="flex flex-col justify-center">
           <ul className="flex items-center gap-3">
-            {/* Home Link */}
+            
             <li className="p-2 hover:bg-gray-200 hover:text-[#FF9494] rounded-lg">
               <Link to="/">Home</Link>
             </li>
 
-            {/* Dropdown Menu */}
+            
             <li className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen(!isDropdownOpen)}
@@ -63,10 +63,10 @@ export default function Navbar() {
                 </svg>
               </button>
 
-              {/* Dropdown Content */}
+             
               {isDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl py-1 text-gray-800 text-base font-medium">
-                  {/* --- Original Doctor Links --- */}
+                 
                   <Link
                     to="/doctor/opd"
                     className="block px-4 py-2 hover:bg-gray-100"
@@ -89,10 +89,10 @@ export default function Navbar() {
                     Beds
                   </Link>
 
-                  {/* --- Separator --- */}
+                  
                   <div className="my-1 border-t border-gray-200"></div>
 
-                  {/* --- New Triage/Emergency Links --- */}
+                  
                   <Link
                     to="/register"
                     className="block px-4 py-2 hover:bg-gray-100"

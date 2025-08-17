@@ -2,7 +2,6 @@ import { useState, useEffect, type FormEvent } from 'react';
 import apiClient from '../services/apiClient';
 import { BedDouble, X, Check, Loader2 } from 'lucide-react';
 
-// --- Type Definitions ---
 interface Patient {
   patient_id: number;
   full_name: string;
@@ -22,7 +21,7 @@ const BedManagement = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // State for the modal
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBed, setSelectedBed] = useState<Bed | null>(null);
   const [selectedPatientId, setSelectedPatientId] = useState<string>('');
@@ -75,7 +74,7 @@ const BedManagement = () => {
         is_occupied: isAssigning,
         patient_id: patientId,
       });
-      await fetchData(); // Refresh data
+      await fetchData(); 
       handleCloseModal();
     } catch (err) {
       setError('Failed to update bed. Please try again.');
@@ -122,7 +121,7 @@ const BedManagement = () => {
         ))}
       </div>
 
-      {/* Bed Assignment Modal */}
+     
       {isModalOpen && selectedBed && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">

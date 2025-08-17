@@ -5,7 +5,7 @@ import { BedDouble, FileText, Pill, UserPlus } from 'lucide-react';
 const Home = () => {
   const { user } = useAuth();
 
-  // Define the features available on the dashboard
+
   const features = [
     {
       icon: <UserPlus className="h-6 w-6" />,
@@ -23,14 +23,13 @@ const Home = () => {
       icon: <FileText className="h-6 w-6" />,
       title: 'Patient Documents',
       description: 'Upload and access documents for a specific patient.',
-      // This link is a placeholder; you'd typically go to a patient list first
+     
       linkTo: '/patient-documents/1', 
     },
     {
       icon: <Pill className="h-6 w-6" />,
       title: 'Prescriptions',
       description: 'Create and view prescriptions for patients.',
-      // This link is also a placeholder
       linkTo: '/prescriptions/1',
     },
   ];

@@ -14,19 +14,19 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        {/* Public Routes */}
+       
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/request-appointment" element={<AppointmentRequest />} />
 
-        {/* Protected Routes (add protection later) */}
+        
         <Route index element={<Home />} />
         <Route path="/patient-registration" element={<PatientRegistration />} />
         <Route path="/patient-documents/:patientId" element={<PatientDocuments />} />
         <Route path="/prescriptions/:patientId" element={<PrescriptionManagement />} />
         <Route path="/bed-management" element={<BedManagement />} />
 
-        {/* Catch-all Route */}
+        
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

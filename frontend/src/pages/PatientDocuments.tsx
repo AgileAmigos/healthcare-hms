@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import apiClient from '../services/apiClient';
 import { Upload, FileText, Paperclip, AlertTriangle, CheckCircle, Loader2 } from 'lucide-react';
 
-// --- Type Definitions ---
+
 interface Patient {
   patient_id: number;
   full_name: string;
@@ -23,7 +23,6 @@ const PatientDocuments = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  // State for the upload form
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [documentType, setDocumentType] = useState('');
   const [isUploading, setIsUploading] = useState(false);
@@ -82,7 +81,7 @@ const PatientDocuments = () => {
       setUploadSuccess('File uploaded successfully!');
       setSelectedFile(null);
       setDocumentType('');
-      // Refresh the document list
+      
       fetchData();
     } catch (err) {
       setUploadError('File upload failed. Please try again.');
@@ -102,7 +101,7 @@ const PatientDocuments = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Document List */}
+    
       <div className="lg:col-span-2 bg-white p-8 rounded-xl shadow-md">
         <h1 className="text-3xl font-bold text-gray-800">Patient Documents</h1>
         <p className="text-gray-600 mt-1">
@@ -122,7 +121,7 @@ const PatientDocuments = () => {
                     </p>
                   </div>
                 </div>
-                {/* In a real app, you'd have a download button here */}
+            
               </div>
             ))
           ) : (
@@ -131,7 +130,7 @@ const PatientDocuments = () => {
         </div>
       </div>
 
-      {/* Upload Form */}
+     
       <div className="bg-white p-8 rounded-xl shadow-md h-fit">
         <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2"><Upload size={24}/> Upload New Document</h2>
         <form onSubmit={handleUpload} className="mt-6 space-y-4">

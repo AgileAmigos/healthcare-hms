@@ -20,7 +20,7 @@ const Signup = () => {
     setIsLoading(true);
 
     try {
-      // Step 1: Create the new user account
+    
       await apiClient.post('/auth/signup', {
         full_name: fullName,
         email,
@@ -28,7 +28,6 @@ const Signup = () => {
         role,
       });
 
-      // Step 2: Automatically log the user in after successful signup
       const formData = new URLSearchParams();
       formData.append('username', email);
       formData.append('password', password);
@@ -41,7 +40,7 @@ const Signup = () => {
 
       const { access_token } = response.data;
       login(access_token);
-      navigate('/'); // Redirect to home page
+      navigate('/'); 
 
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.detail) {

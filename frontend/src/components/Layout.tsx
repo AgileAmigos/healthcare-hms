@@ -13,17 +13,17 @@ const Layout = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Navigation Bar */}
+    
       <header className="bg-white shadow-md sticky top-0 z-50">
         <nav className="container mx-auto px-6 py-3">
           <div className="flex justify-between items-center">
-            {/* Logo and Brand Name */}
+            
             <Link to="/" className="flex items-center space-x-2">
               <Stethoscope className="h-8 w-8 text-blue-600" />
               <span className="text-2xl font-bold text-gray-800">HMS</span>
             </Link>
 
-            {/* Navigation Links */}
+            
             <div className="flex items-center space-x-4">
               {isAuthenticated ? (
                 <>
@@ -61,12 +61,12 @@ const Layout = () => {
         </nav>
       </header>
 
-      {/* Main Content Area */}
+      
       <main className="flex-grow container mx-auto p-6">
-        <Outlet /> {/* Child routes will be rendered here */}
+        <Outlet /> 
       </main>
 
-      {/* Footer */}
+
       <footer className="bg-white border-t mt-auto">
         <div className="container mx-auto px-6 py-4 text-center text-gray-500">
           &copy; {new Date().getFullYear()} Hospital Management System. All rights reserved.

@@ -4,7 +4,7 @@ import apiClient from '../services/apiClient';
 import { useAuth } from '../context/AuthContext';
 import { Pill, PlusCircle, AlertTriangle, CheckCircle, Loader2 } from 'lucide-react';
 
-// --- Type Definitions ---
+
 interface Patient {
   patient_id: number;
   full_name: string;
@@ -26,14 +26,14 @@ interface Prescription {
 
 const PrescriptionManagement = () => {
   const { patientId } = useParams<{ patientId: string }>();
-  const { user } = useAuth(); // Get current user from auth context
+  const { user } = useAuth(); 
 
   const [patient, setPatient] = useState<Patient | null>(null);
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // State for the new prescription form
+  
   const [medication, setMedication] = useState('');
   const [dosage, setDosage] = useState('');
   const [instructions, setInstructions] = useState('');
@@ -89,7 +89,7 @@ const PrescriptionManagement = () => {
       });
       setFormSuccess('Prescription added successfully!');
       resetForm();
-      fetchData(); // Refresh list
+      fetchData(); 
     } catch (err) {
       setFormError('Failed to add prescription. Please try again.');
       console.error(err);
@@ -110,7 +110,7 @@ const PrescriptionManagement = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Prescription List */}
+      
       <div className="lg:col-span-2 bg-white p-8 rounded-xl shadow-md">
         <h1 className="text-3xl font-bold text-gray-800">Prescription Management</h1>
         <p className="text-gray-600 mt-1">
@@ -143,7 +143,7 @@ const PrescriptionManagement = () => {
         </div>
       </div>
 
-      {/* Add Prescription Form (Only for Doctors) */}
+      
       {isDoctor && (
         <div className="bg-white p-8 rounded-xl shadow-md h-fit">
           <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2"><PlusCircle size={24}/> Add New Prescription</h2>

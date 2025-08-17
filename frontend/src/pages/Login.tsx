@@ -17,7 +17,7 @@ const Login = () => {
     setError(null);
     setIsLoading(true);
 
-    // The backend expects form data for the token endpoint
+  
     const formData = new URLSearchParams();
     formData.append('username', email);
     formData.append('password', password);
@@ -31,7 +31,7 @@ const Login = () => {
       
       const { access_token } = response.data;
       login(access_token);
-      navigate('/'); // Redirect to home page on successful login
+      navigate('/'); 
 
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.detail) {

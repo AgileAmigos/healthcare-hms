@@ -13,7 +13,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from .database import Base
 
-# SQLAlchemy model for the 'users' table
 class User(Base):
     __tablename__ = "users"
 
@@ -24,12 +23,11 @@ class User(Base):
     role = Column(String(50), nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
 
-    # Relationships
+   
     registered_patients = relationship("Patient", back_populates="registrar")
     uploaded_documents = relationship("Document", back_populates="uploader")
     prescribed = relationship("Prescription", back_populates="doctor")
 
-# SQLAlchemy model for the 'patients' table
 class Patient(Base):
     __tablename__ = "patients"
 
@@ -42,14 +40,14 @@ class Patient(Base):
     registered_by = Column(Integer, ForeignKey("users.user_id"))
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
 
-    # Relationships
+    
     registrar = relationship("User", back_populates="registered_patients")
     bed = relationship("Bed", back_populates="patient", uselist=False) # One-to-one
     documents = relationship("Document", back_populates="patient")
     prescriptions = relationship("Prescription", back_populates="patient")
     appointments = relationship("Appointment", back_populates="patient")
 
-# SQLAlchemy model for the 'beds' table
+
 class Bed(Base):
     __tablename__ = "beds"
 
@@ -59,10 +57,9 @@ class Bed(Base):
     patient_id = Column(Integer, ForeignKey("patients.patient_id"), nullable=True, unique=True)
     last_updated = Column(TIMESTAMP(timezone=True), server_default=func.now(), onupdate=func.now())
 
-    # Relationship
+   
     patient = relationship("Patient", back_populates="bed")
 
-# SQLAlchemy model for the 'documents' table
 class Document(Base):
     __tablename__ = "documents"
 
@@ -74,11 +71,10 @@ class Document(Base):
     uploaded_by = Column(Integer, ForeignKey("users.user_id"))
     uploaded_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
 
-    # Relationships
+    
     patient = relationship("Patient", back_populates="documents")
     uploader = relationship("User", back_populates="uploaded_documents")
 
-# SQLAlchemy model for the 'prescriptions' table
 class Prescription(Base):
     __tablename__ = "prescriptions"
 
@@ -90,11 +86,10 @@ class Prescription(Base):
     instructions = Column(Text)
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
 
-    # Relationships
     patient = relationship("Patient", back_populates="prescriptions")
     doctor = relationship("User", back_populates="prescribed")
 
-# SQLAlchemy model for the 'appointments' table
+
 class Appointment(Base):
     __tablename__ = "appointments"
 
@@ -106,6 +101,6 @@ class Appointment(Base):
     status = Column(String(50), default='pending')
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
 
-    # Relationship
+   
     patient = relationship("Patient", back_populates="appointments")
 

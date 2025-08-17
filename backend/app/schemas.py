@@ -2,9 +2,6 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 from datetime import date, datetime
 
-# ==================
-# Token Schemas
-# ==================
 
 class Token(BaseModel):
     access_token: str
@@ -13,9 +10,6 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     email: Optional[str] = None
 
-# ==================
-# User Schemas
-# ==================
 
 class UserBase(BaseModel):
     email: EmailStr
@@ -30,11 +24,9 @@ class User(UserBase):
     created_at: datetime
 
     class Config:
-        from_attributes = True # Pydantic V2 compatibility
+        from_attributes = True 
 
-# ==================
-# Patient Schemas
-# ==================
+
 
 class PatientBase(BaseModel):
     full_name: str
@@ -54,9 +46,6 @@ class Patient(PatientBase):
     class Config:
         from_attributes = True
 
-# ==================
-# Bed Schemas
-# ==================
 
 class BedBase(BaseModel):
     bed_number: str
@@ -73,14 +62,10 @@ class Bed(BedBase):
     bed_id: int
     patient_id: Optional[int] = None
     last_updated: datetime
-    patient: Optional[Patient] = None # Include patient details
+    patient: Optional[Patient] = None 
 
     class Config:
         from_attributes = True
-
-# ==================
-# Document Schemas
-# ==================
 
 class DocumentBase(BaseModel):
     document_name: str
@@ -99,9 +84,6 @@ class Document(DocumentBase):
     class Config:
         from_attributes = True
 
-# ==================
-# Prescription Schemas
-# ==================
 
 class PrescriptionBase(BaseModel):
     medication: str
@@ -116,22 +98,20 @@ class Prescription(PrescriptionBase):
     patient_id: int
     doctor_id: int
     created_at: datetime
-    doctor: User # Include doctor details
-    patient: Patient # Include patient details
+    doctor: User 
+    patient: Patient 
 
     class Config:
         from_attributes = True
 
-# ==================
-# Appointment Schemas
-# ==================
+
 
 class AppointmentBase(BaseModel):
     appointment_date: datetime
     reason: Optional[str] = None
 
 class AppointmentCreate(AppointmentBase):
-    patient_id: int # Patient creates their own appointment request
+    patient_id: int 
 
 class AppointmentUpdate(BaseModel):
     doctor_id: Optional[int] = None
@@ -143,7 +123,7 @@ class Appointment(AppointmentBase):
     doctor_id: Optional[int] = None
     status: str
     created_at: datetime
-    patient: Patient # Include patient details
+    patient: Patient 
 
     class Config:
         from_attributes = True
