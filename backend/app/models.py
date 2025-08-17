@@ -1,62 +1,111 @@
-import uuid
-from sqlalchemy import Column, Integer, String, Date, ForeignKey, Text, Enum, TIMESTAMP
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import (
+    create_engine,
+    Column,
+    Integer,
+    String,
+    Date,
+    Boolean,
+    ForeignKey,
+    TIMESTAMP,
+    Text
+)
 from sqlalchemy.orm import relationship
-from .db import engine, SessionLocal
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql import func
+from .database import Base
 
-Base = declarative_base()
+# SQLAlchemy model for the 'users' table
+class User(Base):
+    __tablename__ = "users"
 
+    user_id = Column(Integer, primary_key=True, index=True)
+    email = Column(String(255), unique=True, index=True, nullable=False)
+    password_hash = Column(String(255), nullable=False)
+    full_name = Column(String(255), nullable=False)
+    role = Column(String(50), nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
+
+    # Relationships
+    registered_patients = relationship("Patient", back_populates="registrar")
+    uploaded_documents = relationship("Document", back_populates="uploader")
+    prescribed = relationship("Prescription", back_populates="doctor")
+
+# SQLAlchemy model for the 'patients' table
 class Patient(Base):
     __tablename__ = "patients"
-    id = Column(UUID, primary_key=True)
-    digital_health_id = Column(String, unique=True)
-    first_name = Column(String)
-    last_name = Column(String)
 
-class Staff(Base):
-    __tablename__ = "staff"
-    id = Column(UUID, primary_key=True)
-    first_name = Column(String)
-    last_name = Column(String)
-    specialization = Column(String)
+    patient_id = Column(Integer, primary_key=True, index=True)
+    full_name = Column(String(255), nullable=False)
+    date_of_birth = Column(Date, nullable=False)
+    gender = Column(String(50))
+    contact_number = Column(String(20))
+    address = Column(Text)
+    registered_by = Column(Integer, ForeignKey("users.user_id"))
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
 
+    # Relationships
+    registrar = relationship("User", back_populates="registered_patients")
+    bed = relationship("Bed", back_populates="patient", uselist=False) # One-to-one
+    documents = relationship("Document", back_populates="patient")
+    prescriptions = relationship("Prescription", back_populates="patient")
+    appointments = relationship("Appointment", back_populates="patient")
+
+# SQLAlchemy model for the 'beds' table
+class Bed(Base):
+    __tablename__ = "beds"
+
+    bed_id = Column(Integer, primary_key=True, index=True)
+    bed_number = Column(String(50), unique=True, nullable=False)
+    is_occupied = Column(Boolean, default=False)
+    patient_id = Column(Integer, ForeignKey("patients.patient_id"), nullable=True, unique=True)
+    last_updated = Column(TIMESTAMP(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    # Relationship
+    patient = relationship("Patient", back_populates="bed")
+
+# SQLAlchemy model for the 'documents' table
+class Document(Base):
+    __tablename__ = "documents"
+
+    document_id = Column(Integer, primary_key=True, index=True)
+    patient_id = Column(Integer, ForeignKey("patients.patient_id"), nullable=False)
+    document_name = Column(String(255), nullable=False)
+    document_type = Column(String(50))
+    storage_path = Column(String(255), nullable=False)
+    uploaded_by = Column(Integer, ForeignKey("users.user_id"))
+    uploaded_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
+
+    # Relationships
+    patient = relationship("Patient", back_populates="documents")
+    uploader = relationship("User", back_populates="uploaded_documents")
+
+# SQLAlchemy model for the 'prescriptions' table
+class Prescription(Base):
+    __tablename__ = "prescriptions"
+
+    prescription_id = Column(Integer, primary_key=True, index=True)
+    patient_id = Column(Integer, ForeignKey("patients.patient_id"), nullable=False)
+    doctor_id = Column(Integer, ForeignKey("users.user_id"), nullable=False)
+    medication = Column(Text, nullable=False)
+    dosage = Column(String(100))
+    instructions = Column(Text)
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
+
+    # Relationships
+    patient = relationship("Patient", back_populates="prescriptions")
+    doctor = relationship("User", back_populates="prescribed")
+
+# SQLAlchemy model for the 'appointments' table
 class Appointment(Base):
     __tablename__ = "appointments"
-    id = Column(Integer, primary_key=True)
-    patient_id = Column(UUID, ForeignKey("patients.id"))
-    doctor_id = Column(UUID, ForeignKey("staff.id"))
-    appointment_time = Column(TIMESTAMP)
+
+    appointment_id = Column(Integer, primary_key=True, index=True)
+    patient_id = Column(Integer, ForeignKey("patients.patient_id"), nullable=False)
+    doctor_id = Column(Integer, ForeignKey("users.user_id"), nullable=True)
+    appointment_date = Column(TIMESTAMP(timezone=True), nullable=False)
     reason = Column(Text)
+    status = Column(String(50), default='pending')
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
 
-class Admission(Base):
-    __tablename__ = "admissions"
-    id = Column(Integer, primary_key=True)
-    patient_id = Column(UUID, ForeignKey("patients.id"))
-    admitting_doctor_id = Column(UUID, ForeignKey("staff.id"))
-    admission_date = Column(TIMESTAMP)
-    room_number = Column(String)
-    status = Column(String)
+    # Relationship
+    patient = relationship("Patient", back_populates="appointments")
 
-gender_type_enum = Enum('Male', 'Female', 'Other', 'Prefer not to say', name='gender_type')
-
-class Patient(Base):
-    __tablename__ = "patients"
-    
-    __table_args__ = {"schema": "public"}
-
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), unique=True, nullable=True)
-    
-    # NOTE: Your SQL has a 'digital_health_id'. You may want to add it here.
-    # digital_health_id = Column(String(50), unique=True, nullable=False)
-    
-    first_name = Column(String(100), nullable=False)
-    last_name = Column(String(100), nullable=False)
-    date_of_birth = Column(Date, nullable=False)
-    gender = Column(gender_type_enum)
-    phone_number = Column(String(20))
-    address = Column(String) 
-    
-    presenting_complaint = Column(String)
-    triage_level = Column(String, nullable=True)

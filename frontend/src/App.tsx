@@ -1,32 +1,36 @@
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import Register from './pages/EmergencyRegister';
-import TriageDashboard from './pages/TriageDashboard'; 
-import Alerts from './pages/Alerts'; 
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import OPDList from "./pages/doctor/OPDList";
-import IPDList from "./pages/doctor/IPDList";
-import BedManagement from "./pages/doctor/BedManagement";
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import PatientRegistration from './pages/PatientRegistration';
+import PatientDocuments from './pages/PatientDocuments';
+import PrescriptionManagement from './pages/PrescriptionManagement';
+import AppointmentRequest from './pages/AppointmentRequest';
+import BedManagement from './pages/BedManagement';
+import NotFound from './pages/NotFound';
+import Layout from './components/Layout';
 
 function App() {
-  const isAdminRoute = useLocation().pathname.startsWith("/admin");
   return (
-    <div className="flex flex-col min-h-screen">
-      {!isAdminRoute && <Navbar />}
-      <main className="flex-grow pt-20">
-        <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path="/doctor/opd" element={<OPDList />} />
-            <Route path="/doctor/ipd" element={<IPDList />} />
-            <Route path="/doctor/bed-management" element={<BedManagement />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/triage' element={<TriageDashboard />} />
-            <Route path='/alerts' element={<Alerts />} />
-        </Routes>
-      </main>
-      {!isAdminRoute && <Footer />}
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        {/* Public Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/request-appointment" element={<AppointmentRequest />} />
+
+        {/* Protected Routes (add protection later) */}
+        <Route index element={<Home />} />
+        <Route path="/patient-registration" element={<PatientRegistration />} />
+        <Route path="/patient-documents/:patientId" element={<PatientDocuments />} />
+        <Route path="/prescriptions/:patientId" element={<PrescriptionManagement />} />
+        <Route path="/bed-management" element={<BedManagement />} />
+
+        {/* Catch-all Route */}
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
   );
 }
+
 export default App;

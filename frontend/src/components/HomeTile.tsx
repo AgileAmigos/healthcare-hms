@@ -1,0 +1,33 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ChevronRight } from 'lucide-react';
+
+interface HomeTileProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  linkTo: string;
+}
+
+const HomeTile: React.FC<HomeTileProps> = ({ icon, title, description, linkTo }) => {
+  return (
+    <Link
+      to={linkTo}
+      className="group flex flex-col justify-between p-6 bg-white rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 border border-gray-200"
+    >
+      <div>
+        <div className="flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 text-blue-600 mb-4">
+          {icon}
+        </div>
+        <h3 className="text-xl font-semibold text-gray-800 mb-2">{title}</h3>
+        <p className="text-gray-600 text-sm">{description}</p>
+      </div>
+      <div className="mt-4 flex items-center text-blue-600 font-medium">
+        <span>Go to Section</span>
+        <ChevronRight className="h-5 w-5 ml-1 transform group-hover:translate-x-1 transition-transform" />
+      </div>
+    </Link>
+  );
+};
+
+export default HomeTile;
