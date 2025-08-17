@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { fetchOPDPatients } from "../../lib/api";
 
 type OPDPatient = {
-    id: number;
-    patient_id: string;       // UUID from backend as string
-    doctor_id: string;        // UUID from backend as string
-    appointment_time: string; // ISO string
-    reason: string | null;
-    status: string;           // e.g., "Scheduled"
+    appointment_id: number;
+    patient_id: string;
+    patient_name: string;
+    doctor_id: string;
+    doctor_name: string;
+    appointment_time: string;
 };
 
 export default function OPDList() {
@@ -26,36 +26,52 @@ export default function OPDList() {
     }, [date]);
 
     return (
-        <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold">OPD Patients</h2>
+        <div className="pt-20"> {/* Add padding to offset fixed navbar */}
+            {/* Control Bar */}
+            <div className="bg-gray-100 p-4 shadow-md mb-6 flex justify-between items-center">
+                <h2 className="text-xl font-bold">OPD Patient Appointments</h2>
                 <label className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600">Date</span>
+                    <span className="text-sm font-semibold text-gray-700">Select Date</span>
                     <input
                         type="date"
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
-                        className="border rounded px-2 py-1"
+                        className="border rounded px-2 py-1 shadow-sm"
                     />
                 </label>
             </div>
 
-            {loading && <div>Loading...</div>}
-            {error && <div className="text-red-500">{error}</div>}
-            {!loading && !error && patients.length === 0 && <div>No OPD appointments found.</div>}
+            <div className="px-6">
+                {loading && <div className="text-center">Loading...</div>}
+                {error && <div className="text-center text-red-500">{error}</div>}
+                {!loading && !error && patients.length === 0 && (
+                    <div className="text-center text-gray-500 mt-8">No OPD appointments found for this date.</div>
+                )}
 
-            <div className="space-y-2">
-                {patients.map((p) => (
-                    <div key={p.id} className="border rounded p-4 shadow bg-white">
-                        <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
-                            <div><b>Patient ID:</b> {p.patient_id}</div>
-                            <div><b>Doctor ID:</b> {p.doctor_id}</div>
-                            <div><b>Status:</b> {p.status}</div>
-                            <div><b>Reason:</b> {p.reason ?? "-"}</div>
-                            <div><b>Time:</b> {new Date(p.appointment_time).toLocaleString()}</div>
-                        </div>
-                    </div>
-                ))}
+                {!loading && !error && patients.length > 0 && (
+                    <table className="min-w-full bg-white border rounded-lg shadow">
+                        <thead className="bg-gray-200">
+                            <tr>
+                                <th className="text-left py-3 px-4 uppercase font-semibold text-sm">Appt ID</th>
+                                <th className="text-left py-3 px-4 uppercase font-semibold text-sm">Patient</th>
+                                <th className="text-left py-3 px-4 uppercase font-semibold text-sm">Doctor</th>
+                                <th className="text-left py-3 px-4 uppercase font-semibold text-sm">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody className="text-gray-700">
+                            {patients.map((p) => (
+                                <tr key={p.appointment_id} className="border-b hover:bg-gray-50">
+                                    <td className="text-left py-3 px-4">{p.appointment_id}</td>
+                                    <td className="text-left py-3 px-4">{p.patient_name} ({p.patient_id.substring(0, 8)}...)</td>
+                                    <td className="text-left py-3 px-4">{p.doctor_name} ({p.doctor_id.substring(0, 8)}...)</td>
+                                    <td className="text-left py-3 px-4">
+                                        {new Date(p.appointment_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
             </div>
         </div>
     );

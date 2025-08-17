@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
+from sqlalchemy import func # <-- IMPORT THIS
 from datetime import date
 from ..db import get_db
 from .. import models
@@ -15,6 +16,8 @@ def get_opd_patients(date_filter: date = Query(...), db: Session = Depends(get_d
         db.query(models.Appointment, models.Patient, models.Staff)
         .join(models.Patient, models.Appointment.patient_id == models.Patient.id)
         .join(models.Staff, models.Appointment.doctor_id == models.Staff.id)
+        # ADD THE FILTER LOGIC ON THE LINE BELOW
+        .filter(func.date(models.Appointment.appointment_time) == date_filter)
         .all()
     )
 
