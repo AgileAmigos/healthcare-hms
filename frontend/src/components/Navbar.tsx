@@ -13,7 +13,6 @@ export default function Navbar() {
         <div className="flex flex-col justify-center">
           <ul className="flex gap-3">
             <li className="p-2 hover:bg-gray-200 hover:text-[#FF9494] rounded-lg"><Link to={'/'}>Home</Link></li>
-            <li className="p-2 hover:bg-gray-200 hover:text-[#FF9494] rounded-lg"><Link to={'/register'}>Register</Link></li>
           </ul>
         </div>
       </div>
