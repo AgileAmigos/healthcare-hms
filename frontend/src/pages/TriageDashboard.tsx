@@ -1,9 +1,21 @@
 // frontend/src/pages/TriageDashboard.tsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getPatients, updateTriageLevel } from '../services/api';
 import type { Patient } from '../services/api';
 
-const TriageTagging = ({ patient, onTriageUpdate }: { patient: Patient, onTriageUpdate: (patientId: number, newLevel: string) => void }) => {
+// Helper function to calculate age from a date string
+const calculateAge = (dateOfBirth: string): number => {
+    const birthday = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthday.getFullYear();
+    const m = today.getMonth() - birthday.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) {
+        age--;
+    }
+    return age;
+};
+
+const TriageTagging = ({ patient, onTriageUpdate }: { patient: Patient, onTriageUpdate: (patientId: string, newLevel: string) => void }) => {
     const triageLevels = ["Resuscitation", "Emergency", "Urgent", "Semi-Urgent", "Non-Urgent"];
     const levelColors: { [key: string]: string } = {
         Resuscitation: "bg-red-600",
@@ -27,7 +39,7 @@ const TriageTagging = ({ patient, onTriageUpdate }: { patient: Patient, onTriage
             <div className={`p-2 text-white font-bold rounded ${levelColors[patient.triage_level] || 'bg-gray-500'}`}>
                 {patient.triage_level}
             </div>
-        )
+        );
     }
 
     return (
@@ -46,21 +58,21 @@ export default function TriageDashboard() {
     const [patients, setPatients] = useState<Patient[]>([]);
     const [error, setError] = useState('');
 
-    const fetchPatients = async () => {
-        try {
-            const data = await getPatients();
-            setPatients(data);
-        } catch (err) {
-            setError((err as Error).message);
-        }
-    };
-
     useEffect(() => {
+        const fetchPatients = async () => {
+            try {
+                const data = await getPatients();
+                setPatients(data);
+            } catch (err) {
+                setError((err as Error).message);
+            }
+        };
+
         fetchPatients();
     }, []);
 
 
-    const handleTriageUpdate = (patientId: number, newLevel: string) => {
+    const handleTriageUpdate = (patientId: string, newLevel: string) => {
         setPatients(prevPatients =>
             prevPatients.map(p =>
                 p.id === patientId ? { ...p, triage_level: newLevel } : p
@@ -68,7 +80,7 @@ export default function TriageDashboard() {
         );
     };
 
-    if (error) return <div className="text-red-500 text-center">{error}</div>;
+    if (error) return <div className="text-red-500 text-center p-4">{error}</div>;
 
     return (
         <div className="p-4 max-w-7xl mx-auto">
@@ -77,21 +89,21 @@ export default function TriageDashboard() {
                 <table className="min-w-full">
                     <thead className="bg-gray-200">
                         <tr>
-                            <th className="px-6 py-3 text-left">ID</th>
-                            <th className="px-6 py-3 text-left">Name</th>
-                            <th className="px-6 py-3 text-left">Age</th>
-                            <th className="px-6 py-3 text-left">Complaint</th>
-                            <th className="px-6 py-3 text-center">Triage Status</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Age</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Complaint</th>
+                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Triage Status</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y">
+                    <tbody className="divide-y divide-gray-200">
                         {patients.map(patient => (
                             <tr key={patient.id}>
-                                <td className="px-6 py-4">{patient.id}</td>
-                                <td className="px-6 py-4 font-medium">{patient.full_name}</td>
-                                <td className="px-6 py-4">{patient.age}</td>
-                                <td className="px-6 py-4">{patient.presenting_complaint}</td>
-                                <td className="px-6 py-4 text-center">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{patient.id.substring(0, 8)}...</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{`${patient.first_name} ${patient.last_name}`}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{calculateAge(patient.date_of_birth)}</td>
+                                <td className="px-6 py-4 text-sm text-gray-500">{patient.presenting_complaint}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-center text-sm">
                                     <TriageTagging patient={patient} onTriageUpdate={handleTriageUpdate} />
                                 </td>
                             </tr>

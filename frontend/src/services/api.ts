@@ -2,17 +2,26 @@
 const API_BASE_URL = "http://localhost:8000/api";
 
 // A type for our Patient data for better type-safety
+// frontend/src/services/api.ts
+
 export interface Patient {
-    id: number;
-    full_name: string;
-    age: number;
+    id: string; // Changed to string to handle UUID
+    first_name: string; // ✅ Correct
+    last_name: string; // ✅ Correct
+    date_of_birth: string;
     gender: string;
-    presenting_complaint: string;
+    presenting_complaint: string | null;
     triage_level: string | null;
 }
 
 // A type for the data needed to create a patient
-export type PatientCreate = Omit<Patient, 'id' | 'triage_level'>;
+export type PatientCreate = {
+    first_name: string;
+    last_name: string;
+    date_of_birth: string;
+    gender: string;
+    presenting_complaint: string;
+};
 
 
 /**

@@ -7,6 +7,6 @@ class Settings:
     PROJECT_NAME: str = "Multicare HMS"
     PROJECT_VERSION: str = "0.1.0"
     
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://postgres:password@localhost:5432/hms_db")
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://AgileAmigos:AgileTeam1234@localhost:5432/HMS")
 
 settings = Settings()
