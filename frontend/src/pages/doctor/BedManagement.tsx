@@ -35,7 +35,7 @@ export default function BedManagement() {
     }, []);
 
     return (
-        <div className="pt-20 p-6 bg-gray-50 min-h-screen">
+        <div className="pt-20 p-6 min-h-screen bg-gradient-to-br from-neutral-50 to-red-200">
             <h2 className="text-2xl font-bold mb-6">Bed Management</h2>
 
             {loading && <div className="text-center">Loading occupied beds...</div>}

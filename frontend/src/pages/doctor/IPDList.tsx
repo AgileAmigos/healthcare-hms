@@ -69,12 +69,12 @@ export default function IPDList() {
         }
     };
 
-    if (loading) return <p className="pt-20 text-center">Loading...</p>;
-    if (error) return <p className="pt-20 text-center text-red-500">{error}</p>;
+    if (loading) return <p className="pt-20 p-4 min-h-screen bg-gradient-to-br from-neutral-50 to-red-200 text-center">Loading...</p>;
+    if (error) return <p className="pt-20 p-4 min-h-screen bg-gradient-to-br from-neutral-50 to-red-200 text-center text-red-500">{error}</p>;
 
     return (
         <>
-            <div className="pt-20 p-4">
+            <div className="pt-20 p-4 min-h-screen bg-gradient-to-br from-neutral-50 to-red-200">
                 <h2 className="text-xl font-bold mb-4">Admitted Patients (IPD)</h2>
                 <table className="min-w-full bg-white border">
                     <thead className="bg-gray-100">

@@ -26,7 +26,7 @@ export default function OPDList() {
     }, [date]);
 
     return (
-        <div className="pt-20"> {/* Add padding to offset fixed navbar */}
+        <div className="pt-20 min-h-screen bg-gradient-to-br from-neutral-50 to-red-200"> {/* Add padding to offset fixed navbar */}
             {/* Control Bar */}
             <div className="bg-gray-100 p-4 shadow-md mb-6 flex justify-between items-center">
                 <h2 className="text-xl font-bold">OPD Patient Appointments</h2>
