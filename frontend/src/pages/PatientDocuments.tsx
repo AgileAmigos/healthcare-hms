@@ -103,7 +103,7 @@ const PatientDocuments = () => {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
     
       <div className="lg:col-span-2 bg-white p-8 rounded-xl shadow-md">
-        <h1 className="text-3xl font-bold text-gray-800">Patient Documents</h1>
+        <h1 className="text-3xl font-bold text-red-900">Patient Documents</h1>
         <p className="text-gray-600 mt-1">
           Viewing documents for: <span className="font-semibold">{patient?.full_name}</span> (ID: {patient?.patient_id})
         </p>
@@ -113,7 +113,7 @@ const PatientDocuments = () => {
             documents.map((doc) => (
               <div key={doc.document_id} className="flex items-center justify-between p-4 border rounded-lg bg-gray-50">
                 <div className="flex items-center gap-3">
-                  <FileText className="h-6 w-6 text-blue-600" />
+                  <FileText className="h-6 w-6 text-red-600" />
                   <div>
                     <p className="font-semibold">{doc.document_name}</p>
                     <p className="text-sm text-gray-500">
@@ -132,7 +132,7 @@ const PatientDocuments = () => {
 
      
       <div className="bg-white p-8 rounded-xl shadow-md h-fit">
-        <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2"><Upload size={24}/> Upload New Document</h2>
+        <h2 className="text-2xl font-bold text-red-900 flex items-center gap-2"><Upload size={24}/> Upload New Document</h2>
         <form onSubmit={handleUpload} className="mt-6 space-y-4">
           <div>
             <label htmlFor="doc-type" className="block text-sm font-medium text-gray-700">Document Type</label>
@@ -143,7 +143,7 @@ const PatientDocuments = () => {
               placeholder="e.g., Blood Test, X-Ray"
               value={documentType}
               onChange={(e) => setDocumentType(e.target.value)}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
           <div>
@@ -152,7 +152,7 @@ const PatientDocuments = () => {
               <div className="space-y-1 text-center">
                 <Paperclip className="mx-auto h-12 w-12 text-gray-400" />
                 <div className="flex text-sm text-gray-600">
-                  <label htmlFor="file-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none">
+                  <label htmlFor="file-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-red-600 hover:text-red-500 focus-within:outline-none">
                     <span>Select a file</span>
                     <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileChange} />
                   </label>
@@ -168,7 +168,7 @@ const PatientDocuments = () => {
           <button
             type="submit"
             disabled={isUploading || !selectedFile || !documentType}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 transition-colors"
           >
             {isUploading ? <><Loader2 className="animate-spin" size={16}/> Uploading...</> : <><Upload size={16}/> Upload File</>}
           </button>
@@ -179,4 +179,3 @@ const PatientDocuments = () => {
 };
 
 export default PatientDocuments;
-

@@ -12,19 +12,19 @@ const Layout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-    
-      <header className="bg-white shadow-md sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-red-200 flex flex-col">
+      {/* Navigation Bar */}
+      <header className="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
         <nav className="container mx-auto px-6 py-3">
           <div className="flex justify-between items-center">
             
             <Link to="/" className="flex items-center space-x-2">
-              <Stethoscope className="h-8 w-8 text-blue-600" />
+              <Stethoscope className="h-8 w-8 text-red-600" />
               <span className="text-2xl font-bold text-gray-800">HMS</span>
             </Link>
 
-            
-            <div className="flex items-center space-x-4">
+            {/* Navigation Links */}
+            <div className="flex items-center space-x-2 sm:space-x-4">
               {isAuthenticated ? (
                 <>
                   <span className="text-gray-700 hidden sm:block">
@@ -32,7 +32,7 @@ const Layout = () => {
                   </span>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-100 rounded-lg hover:bg-red-200 transition-colors"
+                    className="flex items-center space-x-2 px-4 py-2 text-sm font-semibold text-red-700 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
                     aria-label="Logout"
                   >
                     <LogOut className="h-4 w-4" />
@@ -43,13 +43,13 @@ const Layout = () => {
                 <>
                   <Link
                     to="/login"
-                    className="px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="px-4 py-2 text-sm font-semibold text-gray-700 rounded-lg hover:bg-red-50 transition-colors"
                   >
                     Login
                   </Link>
                   <Link
                     to="/signup"
-                    className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+                    className="flex items-center space-x-2 px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-lg hover:bg-red-600 shadow-sm hover:shadow-md transition-all"
                   >
                     <UserPlus className="h-4 w-4" />
                     <span>Sign Up</span>

@@ -95,7 +95,7 @@ const BedManagement = () => {
   return (
     <div className="bg-white p-8 rounded-xl shadow-md">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">Bed Management</h1>
+        <h1 className="text-3xl font-bold text-red-900">Bed Management</h1>
         <p className="text-gray-600 mt-1">View and manage hospital bed allocation.</p>
       </div>
 
@@ -126,7 +126,7 @@ const BedManagement = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold">Manage Bed {selectedBed.bed_number}</h2>
+              <h2 className="text-2xl font-bold text-red-900">Manage Bed {selectedBed.bed_number}</h2>
               <button onClick={handleCloseModal} className="p-1 rounded-full hover:bg-gray-200">
                 <X size={24} />
               </button>
@@ -140,7 +140,7 @@ const BedManagement = () => {
                   id="patient"
                   value={selectedPatientId}
                   onChange={(e) => setSelectedPatientId(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 bg-white"
                 >
                   <option value="">-- Vacant --</option>
                   {patients.map((p) => (
@@ -161,7 +161,7 @@ const BedManagement = () => {
                 <button
                   type="submit"
                   disabled={isUpdating}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
+                  className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 disabled:opacity-50 flex items-center gap-2"
                 >
                   {isUpdating ? <Loader2 className="animate-spin" size={16}/> : <Check size={16}/>}
                   {isUpdating ? 'Updating...' : 'Update Bed'}

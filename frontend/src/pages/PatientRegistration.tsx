@@ -54,7 +54,7 @@ const PatientRegistration = () => {
   return (
     <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">Patient Registration</h1>
+        <h1 className="text-3xl font-bold text-red-900">Patient Registration</h1>
         <p className="text-gray-600 mt-1">Enter the new patient's details below.</p>
       </div>
 
@@ -68,7 +68,7 @@ const PatientRegistration = () => {
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
           <div>
@@ -79,7 +79,7 @@ const PatientRegistration = () => {
               required
               value={dateOfBirth}
               onChange={(e) => setDateOfBirth(e.target.value)}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
         </div>
@@ -91,7 +91,7 @@ const PatientRegistration = () => {
               id="gender"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 bg-white"
             >
               <option value="">Select Gender</option>
               <option value="Male">Male</option>
@@ -106,7 +106,7 @@ const PatientRegistration = () => {
               type="tel"
               value={contactNumber}
               onChange={(e) => setContactNumber(e.target.value)}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
         </div>
@@ -118,7 +118,7 @@ const PatientRegistration = () => {
             rows={3}
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
           />
         </div>
 
@@ -140,7 +140,7 @@ const PatientRegistration = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 transition-colors"
           >
             {isLoading ? 'Saving...' : <><UserPlus size={16}/> Register Patient</>}
           </button>
