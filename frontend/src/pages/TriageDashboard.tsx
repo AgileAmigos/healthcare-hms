@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '../services/apiClient';
+import { Pencil } from 'lucide-react';
 
 interface Patient {
     patient_id: number;
@@ -20,7 +21,7 @@ const calculateAge = (dateOfBirth: string): number => {
     return age;
 };
 
-const TriageTagging = ({ patient, onTriageUpdate }: { patient: Patient, onTriageUpdate: (patientId: number, newLevel: string) => void }) => {
+const TriageTagging = ({ patient, onTriageUpdate, onTriageReset }: { patient: Patient, onTriageUpdate: (patientId: number, newLevel: string) => void, onTriageReset: (patientId: number) => void }) => {
     const triageLevels = ["Resuscitation", "Emergency", "Urgent", "Semi-Urgent", "Non-Urgent"];
     const levelColors: { [key: string]: string } = {
         Resuscitation: "bg-red-600",
@@ -41,17 +42,27 @@ const TriageTagging = ({ patient, onTriageUpdate }: { patient: Patient, onTriage
 
     if (patient.triage_level) {
         return (
-            <div className={`p-2 text-white text-xs font-bold rounded ${levelColors[patient.triage_level] || 'bg-gray-500'}`}>
-                {patient.triage_level}
+            <div className="flex items-center justify-center gap-2">
+                <div className={`w-24 text-center px-3 py-1 text-white text-xs font-bold rounded ${levelColors[patient.triage_level] || 'bg-gray-500'}`}>
+                    {patient.triage_level}
+                </div>
+                <button onClick={() => onTriageReset(patient.patient_id)} className="p-1 text-gray-500 hover:text-blue-600 rounded-full hover:bg-gray-200 transition-colors">
+                    <Pencil size={14} />
+                </button>
             </div>
         );
     }
 
     return (
-        <div className="flex space-x-1">
+        <div className="flex items-center justify-center space-x-1">
             {triageLevels.map(level => (
-                <button key={level} onClick={() => handleTriageSelect(level)} className="px-2 py-1 text-xs text-white bg-gray-500 rounded hover:bg-gray-700">
-                    {level.substring(0, 4)}
+                <button
+                    key={level}
+                    onClick={() => handleTriageSelect(level)}
+                    className={`h-6 w-6 rounded-sm transition-transform hover:scale-110 ${levelColors[level]}`}
+                    title={level}
+                >
+                    <span className="sr-only">{level}</span>
                 </button>
             ))}
         </div>
@@ -82,6 +93,19 @@ export default function TriageDashboard() {
         );
     };
 
+    const handleTriageReset = async (patientId: number) => {
+        try {
+            await apiClient.put(`/patients/${patientId}/triage`, { triage_level: null });
+            setPatients(prevPatients =>
+                prevPatients.map(p =>
+                    p.patient_id === patientId ? { ...p, triage_level: null } : p
+                )
+            );
+        } catch (error) {
+            alert(`Error resetting triage: ${(error as Error).message}`);
+        }
+    };
+
     if (error) return <div className="text-red-500 text-center p-4">{error}</div>;
 
     return (
@@ -106,7 +130,7 @@ export default function TriageDashboard() {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{calculateAge(patient.date_of_birth)}</td>
                                 <td className="px-6 py-4 text-sm text-gray-500">{patient.presenting_complaint}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-center text-sm">
-                                    <TriageTagging patient={patient} onTriageUpdate={handleTriageUpdate} />
+                                    <TriageTagging patient={patient} onTriageUpdate={handleTriageUpdate} onTriageReset={handleTriageReset} />
                                 </td>
                             </tr>
                         ))}

@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 from datetime import date, datetime
-
+from typing import Optional
 
 class Token(BaseModel):
     access_token: str
@@ -47,7 +47,7 @@ class Patient(PatientBase):
         from_attributes = True
 
 class TriageUpdate(BaseModel):
-    triage_level: str
+    triage_level: Optional[str] = None
 
 class BedBase(BaseModel):
     bed_number: str

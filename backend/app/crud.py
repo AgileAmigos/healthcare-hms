@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 from . import models, schemas, security
-
-
+from typing import Optional
 
 def get_user_by_email(db: Session, email: str):
 
@@ -43,7 +42,7 @@ def get_high_priority_patients(db: Session):
     high_priority_levels = ["Resuscitation", "Emergency"]
     return db.query(models.Patient).filter(models.Patient.triage_level.in_(high_priority_levels)).all()
 
-def update_patient_triage_level(db: Session, patient_id: int, triage_level: str):
+def update_patient_triage_level(db: Session, patient_id: int, triage_level: Optional[str]):
     db_patient = get_patient(db, patient_id)
     if db_patient:
         db_patient.triage_level = triage_level
