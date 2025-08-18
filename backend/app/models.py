@@ -39,6 +39,8 @@ class Patient(Base):
     address = Column(Text)
     registered_by = Column(Integer, ForeignKey("users.user_id"))
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
+    presenting_complaint = Column(Text, nullable=True)
+    triage_level = Column(String(50), nullable=True)
 
     
     registrar = relationship("User", back_populates="registered_patients")

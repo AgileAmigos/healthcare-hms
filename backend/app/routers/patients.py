@@ -52,3 +52,21 @@ def read_patient(patient_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Patient not found")
     return db_patient
 
+@router.get("/alerts/high-priority", response_model=List[schemas.Patient])
+def read_high_priority_alerts(db: Session = Depends(get_db)):
+    """Retrieves patients with high-priority triage levels."""
+    return crud.get_high_priority_patients(db)
+
+@router.put("/{patient_id}/triage", response_model=schemas.Patient)
+def update_triage(
+    patient_id: int,
+    triage_update: schemas.TriageUpdate,
+    db: Session = Depends(get_db)
+):
+    """Updates a patient's triage level."""
+    db_patient = crud.update_patient_triage_level(
+        db=db, patient_id=patient_id, triage_level=triage_update.triage_level
+    )
+    if db_patient is None:
+        raise HTTPException(status_code=404, detail="Patient not found")
+    return db_patient

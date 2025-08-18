@@ -26,14 +26,13 @@ class User(UserBase):
     class Config:
         from_attributes = True 
 
-
-
 class PatientBase(BaseModel):
     full_name: str
     date_of_birth: date
     gender: Optional[str] = None
     contact_number: Optional[str] = None
     address: Optional[str] = None
+    presenting_complaint: Optional[str] = None
 
 class PatientCreate(PatientBase):
     pass
@@ -42,10 +41,13 @@ class Patient(PatientBase):
     patient_id: int
     registered_by: Optional[int] = None
     created_at: datetime
+    triage_level: Optional[str] = None
 
     class Config:
         from_attributes = True
 
+class TriageUpdate(BaseModel):
+    triage_level: str
 
 class BedBase(BaseModel):
     bed_number: str
