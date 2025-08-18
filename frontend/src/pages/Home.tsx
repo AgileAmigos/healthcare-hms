@@ -1,6 +1,6 @@
 import { useAuth } from '../context/AuthContext';
 import HomeTile from '../components/HomeTile';
-import { BedDouble, FileText, ListTodo, Pill, Siren, UserPlus } from 'lucide-react';
+import { BedDouble, FileText, ListTodo, Pill, Siren, UserPlus, ClipboardClock } from 'lucide-react';
 
 const Home = () => {
   const { user } = useAuth();
@@ -43,6 +43,12 @@ const Home = () => {
       title: 'Prescriptions',
       description: 'Create and view prescriptions for patients.',
       linkTo: '/prescriptions/1',
+    },
+    {
+      icon: <ClipboardClock className="h-6 w-6" />,
+      title: 'Appointment Request',
+      description: 'Appointment for patients.',
+      linkTo: '/request-appointment',
     },
   ];
 
