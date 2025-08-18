@@ -17,10 +17,10 @@ const Layout = () => {
       <header className="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
         <nav className="container mx-auto px-6 py-3">
           <div className="flex justify-between items-center">
-            
+
             <Link to="/" className="flex items-center space-x-2">
               <Stethoscope className="h-8 w-8 text-red-600" />
-              <span className="text-2xl font-bold text-gray-800">HMS</span>
+              <span className="text-2xl font-bold text-gray-800">Multicare HMS</span>
             </Link>
 
             {/* Navigation Links */}
@@ -61,9 +61,9 @@ const Layout = () => {
         </nav>
       </header>
 
-      
+
       <main className="flex-grow container mx-auto p-6">
-        <Outlet /> 
+        <Outlet />
       </main>
 
 
