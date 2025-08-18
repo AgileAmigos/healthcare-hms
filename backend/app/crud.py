@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 from . import models, schemas, security
-
-
+from typing import Optional
 
 def get_user_by_email(db: Session, email: str):
 
@@ -39,6 +38,17 @@ def create_patient(db: Session, patient: schemas.PatientCreate, user_id: int):
     db.refresh(db_patient)
     return db_patient
 
+def get_high_priority_patients(db: Session):
+    high_priority_levels = ["Resuscitation", "Emergency"]
+    return db.query(models.Patient).filter(models.Patient.triage_level.in_(high_priority_levels)).all()
+
+def update_patient_triage_level(db: Session, patient_id: int, triage_level: Optional[str]):
+    db_patient = get_patient(db, patient_id)
+    if db_patient:
+        db_patient.triage_level = triage_level
+        db.commit()
+        db.refresh(db_patient)
+    return db_patient
 
 def get_beds(db: Session, skip: int = 0, limit: int = 100):
     
@@ -79,6 +89,14 @@ def get_appointments(db: Session, skip: int = 0, limit: int = 100):
 
     return db.query(models.Appointment).offset(skip).limit(limit).all()
 
+def update_appointment_status(db: Session, appointment_id: int, status: str):
+    """Updates the status of an appointment."""
+    db_appointment = db.query(models.Appointment).filter(models.Appointment.appointment_id == appointment_id).first()
+    if db_appointment:
+        db_appointment.status = status
+        db.commit()
+        db.refresh(db_appointment)
+    return db_appointment
 
 def create_prescription(db: Session, prescription: schemas.PrescriptionCreate, doctor_id: int):
 

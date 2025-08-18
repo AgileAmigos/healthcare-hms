@@ -1,6 +1,6 @@
 import { useAuth } from '../context/AuthContext';
 import HomeTile from '../components/HomeTile';
-import { BedDouble, FileText, Pill, UserPlus } from 'lucide-react';
+import { BedDouble, FileText, ListTodo, Pill, Siren, UserPlus, ClipboardClock } from 'lucide-react';
 
 const Home = () => {
   const { user } = useAuth();
@@ -8,10 +8,22 @@ const Home = () => {
 
   const features = [
     {
+      icon: <Siren className="h-6 w-6" />,
+      title: 'High-Priority Alerts',
+      description: 'View real-time alerts for critical patients.',
+      linkTo: '/alerts',
+    },
+    {
       icon: <UserPlus className="h-6 w-6" />,
       title: 'Patient Registration',
       description: 'Register new patients and manage their information.',
       linkTo: '/patient-registration',
+    },
+    {
+      icon: <ListTodo className="h-6 w-6" />,
+      title: 'Triage Dashboard',
+      description: 'Manage and assign triage levels to incoming patients.',
+      linkTo: '/triage-dashboard',
     },
     {
       icon: <BedDouble className="h-6 w-6" />,
@@ -23,14 +35,20 @@ const Home = () => {
       icon: <FileText className="h-6 w-6" />,
       title: 'Patient Documents',
       description: 'Upload and access documents for a specific patient.',
-     
-      linkTo: '/patient-documents/1', 
+
+      linkTo: '/patient-documents/1',
     },
     {
       icon: <Pill className="h-6 w-6" />,
       title: 'Prescriptions',
       description: 'Create and view prescriptions for patients.',
       linkTo: '/prescriptions/1',
+    },
+    {
+      icon: <ClipboardClock className="h-6 w-6" />,
+      title: 'Appointment Request',
+      description: 'Appointment for patients.',
+      linkTo: '/appointment-management',
     },
   ];
 

@@ -1,19 +1,13 @@
 import React, { createContext, useState, useContext, useEffect, type ReactNode } from 'react';
-// import apiClient from '../services/apiClient';
+import apiClient from '../services/apiClient';
 import { jwtDecode } from 'jwt-decode'; 
 
 // --- Type Definitions ---
-
 interface User {
   user_id: number;
   email: string;
   full_name: string;
   role: 'doctor' | 'nurse' | 'admin';
-}
-
-interface DecodedToken {
-  sub: string; // Subject (email)
-  exp: number; // Expiration time
 }
 
 interface AuthContextType {
@@ -25,11 +19,7 @@ interface AuthContextType {
   logout: () => void;
 }
 
-// --- Context Creation ---
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// --- Auth Provider Component ---
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -43,25 +33,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const initializeAuth = async () => {
       if (token) {
+        // Set the authorization header for the API client
+        apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         try {
-          const decodedToken: DecodedToken = jwtDecode(token);
-          // Check if token is expired
-          if (decodedToken.exp * 1000 < Date.now()) {
-            logout();
-          } else {
-            // In a real app, you would fetch user details from a '/users/me' endpoint
-            // For now, we'll decode the user info we can from the token
-            // This is a simplification; the backend doesn't currently put full user details in the token
-            setUser({
-                // This is placeholder data until you create a /me endpoint
-                user_id: 0, 
-                email: decodedToken.sub,
-                full_name: 'User', // Placeholder
-                role: 'doctor' // Placeholder, you'd get this from a /me endpoint
-            });
-          }
+          // Fetch user details using the token
+          const response = await apiClient.get('/auth/me');
+          setUser(response.data);
         } catch (error) {
-          console.error("Invalid token:", error);
+          console.error("Failed to fetch user:", error);
+          // If token is invalid, log out
           logout();
         }
       }
@@ -71,16 +51,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     initializeAuth();
   }, [token]);
 
-  const login = (newToken: string) => {
+  const login = async (newToken: string) => {
     localStorage.setItem('authToken', newToken);
-    setToken(newToken);
+    apiClient.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+    try {
+      // Fetch user details immediately after login
+      const response = await apiClient.get('/auth/me');
+      setUser(response.data);
+      setToken(newToken);
+    } catch (error) {
+      console.error("Failed to fetch user after login:", error);
+    }
   };
 
   const logout = () => {
     localStorage.removeItem('authToken');
+    delete apiClient.defaults.headers.common['Authorization'];
     setUser(null);
     setToken(null);
-    // Optionally redirect to login page
     window.location.href = '/login';
   };
 
@@ -99,8 +87,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-// --- Custom Hook ---
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
