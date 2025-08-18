@@ -43,3 +43,19 @@ def read_appointments(
     appointments = crud.get_appointments(db, skip=skip, limit=limit)
     return appointments
 
+@router.put("/{appointment_id}/status", response_model=schemas.Appointment)
+def update_appointment_status(
+    appointment_id: int,
+    status_update: schemas.AppointmentUpdate, # You will need to create this schema
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_active_staff)
+):
+    """
+    Update the status of an appointment (e.g., 'confirmed', 'cancelled').
+    """
+    updated_appointment = crud.update_appointment_status(
+        db=db, appointment_id=appointment_id, status=status_update.status
+    )
+    if updated_appointment is None:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    return updated_appointment

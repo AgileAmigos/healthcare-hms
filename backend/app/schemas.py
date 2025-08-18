@@ -116,8 +116,7 @@ class AppointmentCreate(AppointmentBase):
     patient_id: int 
 
 class AppointmentUpdate(BaseModel):
-    doctor_id: Optional[int] = None
-    status: Optional[str] = None
+    status: str
 
 class Appointment(AppointmentBase):
     appointment_id: int

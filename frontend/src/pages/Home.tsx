@@ -48,7 +48,7 @@ const Home = () => {
       icon: <ClipboardClock className="h-6 w-6" />,
       title: 'Appointment Request',
       description: 'Appointment for patients.',
-      linkTo: '/request-appointment',
+      linkTo: '/appointment-management',
     },
   ];
 

@@ -89,6 +89,14 @@ def get_appointments(db: Session, skip: int = 0, limit: int = 100):
 
     return db.query(models.Appointment).offset(skip).limit(limit).all()
 
+def update_appointment_status(db: Session, appointment_id: int, status: str):
+    """Updates the status of an appointment."""
+    db_appointment = db.query(models.Appointment).filter(models.Appointment.appointment_id == appointment_id).first()
+    if db_appointment:
+        db_appointment.status = status
+        db.commit()
+        db.refresh(db_appointment)
+    return db_appointment
 
 def create_prescription(db: Session, prescription: schemas.PrescriptionCreate, doctor_id: int):
 

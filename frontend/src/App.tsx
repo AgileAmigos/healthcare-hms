@@ -11,6 +11,7 @@ import NotFound from './pages/NotFound';
 import Layout from './components/Layout';
 import Alerts from './pages/Alerts';
 import TriageDashboard from './pages/TriageDashboard';
+import AppointmentManagement from './pages/AppointmentManagement';
 
 function App() {
   return (
@@ -29,8 +30,7 @@ function App() {
         <Route path="/bed-management" element={<BedManagement />} />
         <Route path="/alerts" element={<Alerts />} />
         <Route path="/triage-dashboard" element={<TriageDashboard />} />
-
-
+        <Route path="/appointment-management" element={<AppointmentManagement />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
