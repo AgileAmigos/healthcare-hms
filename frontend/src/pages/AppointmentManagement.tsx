@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import apiClient from '../services/apiClient';
-import { Check, X, Loader2 } from 'lucide-react';
+import { Check, X, Calendar, Loader2 } from 'lucide-react';
 
 interface Patient {
     patient_id: number;
